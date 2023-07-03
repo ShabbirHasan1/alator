@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.exchange";
+option java_outer_classname = "ExchangeProto";
+
+package exchange;
+
+enum OrderType {
+  MARKET_SELL = 0;
+  MARKET_BUY = 1;
+  LIMIT_SELL = 2;
+  LIMIT_BUY = 3;
+  STOP_SELL = 4;
+  STOP_BUY = 5;
+}
+
+message Void {}
+
+message Order {
+  OrderType order_type = 1;
+  string symbol = 2;
+  float shares = 3;
+  float price = 4;
+}
+
+message OrderId {
+  uint64 order_id = 1;
+}
+
+service Exchange {
+  rpc InsertOrder(Order) returns (OrderId) {}
+  rpc DeleteOrder(OrderId) returns (Void) {}
+  rpc GetOrder(OrderId) returns (Order) {}
+  rpc Check(Void) returns (Void) {}
+  rpc Finish(Void) returns (Void) {}
+}
+
